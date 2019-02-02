@@ -3,7 +3,8 @@ from PIL import Image
 from pylab import *
 import copy
 import math
-from scipy.signal import convolve2d
+
+
 
 def horizonralFilter(imageArray): 
 
@@ -18,7 +19,7 @@ def horizonralFilter(imageArray):
 			for x in range(horizonralFilterArray.shape[0]):
 				for y in range(horizonralFilterArray.shape[1]):
 					sum += horizonralFilterArray[x][y] * imageArray[i - x + 1][j - y + 1]
-			newImageArray[i][j] = math.sqrt(sum ** 2)
+			newImageArray[i][j] = abs(sum)
 	
 	return newImageArray
 
@@ -34,7 +35,7 @@ def verticalFilter(imageArray):
 			for x in range(verticalFilterArray.shape[0]):
 				for y in range(verticalFilterArray.shape[1]):
 					sum += verticalFilterArray[x][y] * imageArray[i - x + 1][j - y + 1]
-			newImageArray[i][j] = math.sqrt(sum ** 2)
+			newImageArray[i][j] = abs(sum)
 	
 	return newImageArray
 
@@ -48,9 +49,12 @@ newvImage = Image.fromarray(vImage)
 newhImage = Image.fromarray(hImage)
 
 
-newImg = np.add(newhImage, newvImage)
+newImageArray = np.add(newhImage, newvImage)
 
-Image.fromarray(newImg).convert('L').save('newOne.jpg')
+Image.fromarray(newImageArray).convert('L').save('newOne.jpg')
 
+newImage = Image.open('newOne.jpg')
+imshow(newImage)
+show()
 
 
